@@ -30,6 +30,6 @@
 
 4. If you end up using asymmetrical signing, then we need to have a private/public key pair. We can generate the public/private key pair using a script or/and Makefile. Optionally, provide a JWKS endpoint (see section below) that vents out a set of JWKs. Each JWK contains the public key. A common best practice is to rotate the keys. This means that the JWKS endpoint will return more than one public key with expirations that overlap each other. You can generate the public/private key pairs and persist them in the data store, and remove them in the background when keys expire. NOTE: Since this is a monolith API server, a JWKS endpoint really has no practical use other than a coding exercise. In the real world, we may use JWKS in a microservice system or secure webhook setup.
     
-    Private and Public Keys do not expire but cerficate expire which is not mentioned.
+    Private and Public Keys do not expire but certificate expire which is not mentioned.
     
     Here public keys are set in the way that it gets removed when time expires.
