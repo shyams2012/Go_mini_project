@@ -1,9 +1,13 @@
 # Mini Project
 
 # How to run project
-    ```bash 
+Create a database having name "mini_project" in mysql
+
+& run below command 
+
+```bash 
     $ go run .
-    ```
+```
 
 
 ## This is sample project not meant project production use.
