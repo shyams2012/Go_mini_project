@@ -3,7 +3,7 @@
 # How to run project
 *Create a database having name "mini_project" in mysql
 
-*Create .env file and give appropriate username and password as given in .env_example file
+*Create .env file and give appropriate username and password as shown in .env_example file
 
 & run below command 
 
