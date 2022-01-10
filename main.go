@@ -39,10 +39,8 @@ func init() {
 func main() {
 	r := mux.NewRouter()
 	finalhandler := http.HandlerFunc(user.GetProfile)
-
 	r.Handle("/getProfile", middleware.Middleware((finalhandler))).Methods("GET")
 	r.HandleFunc("/login", user.Login).Methods("PUT")
-
 	fmt.Printf("Starting server at port 8000\n")
 	http.ListenAndServe(":8000", r)
 
