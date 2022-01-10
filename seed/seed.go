@@ -2,19 +2,18 @@ package seed
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/shyams2012/Go_mini_project/types"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
+//Create user
 func CreateUser(db *gorm.DB, email, password, name, location string) error {
 	var users = []types.User{}
 
 	if err := db.Where("email = ?", email).Find(&users).Error; err != nil {
-		log.Fatalln(err)
-		fmt.Println(err)
+		fmt.Println("Error getting user. Error :", err)
 	}
 
 	if len(users) > 0 {

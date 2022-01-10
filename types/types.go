@@ -17,7 +17,7 @@ type AuthKey struct {
 	Email          string    `json:"email"`
 	PrivateKey     string    `json:"privateKey"`
 	PublicKey      string    `json:"publicKey"`
-	ExpirationTime time.Time `json:"time"`
+	ExpirationTime time.Time `json:"expirationTime"`
 }
 
 type Seed struct {

@@ -11,16 +11,8 @@ import (
 	"gorm.io/gorm"
 )
 
+//Mysql database connection
 func DbConn() *gorm.DB {
-	/*
-		// For sqlite
-			db, err := gorm.Open(sqlite.Open("users.db"), &gorm.Config{})
-			if err != nil {
-				panic("failed to connect database")
-			}
-
-			return db
-	*/
 
 	dbUserName := os.Getenv("MYSQL_USERNAME")
 	dbPassword := os.Getenv("MYSQL_PASS")
@@ -30,11 +22,11 @@ func DbConn() *gorm.DB {
 
 	if err != nil {
 		panic("failed to connect database")
-
 	}
 	return db
 }
 
+//Migration
 func Migrate() error {
 	db := DbConn()
 	return db.AutoMigrate(
@@ -43,6 +35,7 @@ func Migrate() error {
 	)
 }
 
+//Seeding of users
 func SeedUsers() (err error) {
 	db := DbConn()
 
@@ -51,6 +44,5 @@ func SeedUsers() (err error) {
 			log.Fatalf("Running seed '%s', failed with error: %s", seed.Name, err)
 		}
 	}
-
 	return
 }

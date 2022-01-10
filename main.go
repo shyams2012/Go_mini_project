@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -25,7 +24,7 @@ func init() {
 	err := godotenv.Load(".env")
 
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		fmt.Println("Error getting env file. Error :", err)
 	}
 
 	err = db.Migrate()
@@ -50,9 +49,10 @@ func main() {
 	removeExpiredKeys()
 }
 
+//Removes expired keys from database
 func removeExpiredKeys() {
 	tickChan := time.NewTicker(tickerInterval).C
-
+	//Infinite loop to remove expired keys at interval of 10 second using NewTicker function
 	for {
 		<-tickChan
 		fmt.Println("Now:", time.Now())
@@ -60,7 +60,7 @@ func removeExpiredKeys() {
 
 		err := db.Where("expiration_time < ?", time.Now()).Delete(types.AuthKey{}).Error
 		if err != nil {
-			fmt.Println("Error deleting expired token: ", err)
+			fmt.Println("Error deleting expired token.Error:", err)
 		}
 	}
 }

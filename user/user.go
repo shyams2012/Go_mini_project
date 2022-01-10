@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 
@@ -24,6 +23,7 @@ type Token struct {
 
 var Expire_time = time.Now().Add(5 * time.Minute)
 
+//User Login
 func Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		db := db.DbConn()
@@ -34,8 +34,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 		email := result.Email
 		password := result.Password
-		fmt.Println("result.Email", result.Email)
-
 		user := types.User{}
 
 		db.Where("Email = ?", email).Find(&user)
@@ -49,7 +47,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		var tokenObj = Token{
 			Email: email,
 			StandardClaims: jwt.StandardClaims{
-				// Enter expiration in minutes
 				ExpiresAt: Expire_time.Unix(),
 			},
 		}
@@ -57,36 +54,35 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		rsaKey, err := auth.NewRSAKey()
 
 		if err != nil {
-			log.Fatalf("failed to generate rsa key: %v", err)
+			fmt.Println("Error getting rsa key. Error :", err)
 		}
 
 		// Generate JWT
 		jwt, err := auth.NewJWT(tokenObj.Email, rsaKey, time.Now().Add(auth.JWTAddExpiry))
 		if err != nil {
-			log.Fatalf("failed to generate to jwt: %v", err)
+			fmt.Println("Error getting jwt. Error :", err)
 		}
 
-		// Add keys to DB
 		privateKey, _ := json.Marshal(rsaKey)
 		privateString := string(privateKey)
 		publicKey, _ := json.Marshal(rsaKey.PublicKey)
 		publicString := string(publicKey)
 
-		SavePrivateKey_PublicKey(privateString, publicString, email)
+		SavePrivateKeyAndPublicKey(privateString, publicString, email)
 		json.NewEncoder(w).Encode(jwt)
 	}
 }
 
-func SavePrivateKey_PublicKey(privateString, publicString, email string) {
+//Save PrivateKey and PublicKey to database
+func SavePrivateKeyAndPublicKey(privateString, publicString, email string) {
 	db := db.DbConn()
-
 	authKeys := &types.AuthKey{Email: email, PrivateKey: privateString, PublicKey: publicString, ExpirationTime: Expire_time}
-
 	if err := db.Create(authKeys).Error; err != nil {
-		fmt.Println("err: found", err)
+		fmt.Println("Error getting authKeys. Error :", err)
 	}
 }
 
+//Get User Profile
 func GetProfile(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		db := db.DbConn()
@@ -96,11 +92,11 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 		if err := db.Table("users").Select("email", "name", "location").Where("email = ?", email).Scan(&user).Error; err != nil {
 			fmt.Print("Error getting user profile. Error :", err)
 		}
-
 		json.NewEncoder(w).Encode(user)
 	}
 }
 
+//Get PublicKeys
 func GetPublicKeys(email string) []types.AuthKey {
 	publicKeys := make([]types.AuthKey, 0)
 	publicKey := new(types.AuthKey)
@@ -116,6 +112,5 @@ func GetPublicKeys(email string) []types.AuthKey {
 		}
 		publicKeys = append(publicKeys, *publicKey)
 	}
-
 	return publicKeys
 }
