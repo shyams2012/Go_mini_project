@@ -29,7 +29,7 @@
    
     Ans: The authorization with bearer token is provided in url endpoint. 
     After user authorized ,profile attribute such as email,name and location return in output.
-    The URL Endpoint ,Authorization token and output are given below. 
+    The URL Endpoint ,Authorization token and output should be given as below. 
     
     End point for profile: http://localhost:8000/getProfile    
     
