@@ -3,8 +3,14 @@ package types
 import (
 	"time"
 
+	"github.com/square/go-jose/v3/jwt"
 	"gorm.io/gorm"
 )
+
+type UserClaims struct {
+	jwt.Claims
+	Email string `json:"email"`
+}
 
 type User struct {
 	Email    string `json:"email"`

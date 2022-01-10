@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/shyams2012/Go_mini_project/types"
 	"github.com/square/go-jose/v3"
 	"github.com/square/go-jose/v3/jwt"
 )
 
 const (
-	JWTIssuer    = "Acme" // The issuer of JWT
+	JWTIssuer    = "ShyamSah" // The issuer of JWT
 	JWTAddExpiry = time.Minute * 3000
 )
 
@@ -18,13 +19,8 @@ var (
 	ErrInvalidJWT error = fmt.Errorf("invalid jwt")
 )
 
-type UserClaims struct {
-	jwt.Claims
-	Email string `json:"email"`
-}
-
 func NewJWT(email string, priKey *rsa.PrivateKey, expireAt time.Time) (string, error) {
-	claims := UserClaims{
+	claims := types.UserClaims{
 		Email: email,
 		Claims: jwt.Claims{
 			Issuer: JWTIssuer,
@@ -49,13 +45,13 @@ func NewJWT(email string, priKey *rsa.PrivateKey, expireAt time.Time) (string, e
 		CompactSerialize()
 }
 
-func ParseJWT(signedJWT string, pubKey *rsa.PublicKey) (*UserClaims, error) {
+func ParseJWT(signedJWT string, pubKey *rsa.PublicKey) (*types.UserClaims, error) {
 	token, err := jwt.ParseSigned(signedJWT)
 	if err != nil {
 		return nil, fmt.Errorf("invalid jwt")
 	}
 
-	claims := new(UserClaims)
+	claims := new(types.UserClaims)
 	if err := token.Claims(pubKey, claims); err != nil {
 		return nil, fmt.Errorf("invalid jwt")
 	}
@@ -75,13 +71,13 @@ func ParseJWT(signedJWT string, pubKey *rsa.PublicKey) (*UserClaims, error) {
 	return claims, nil
 }
 
-func GetUnsafeClaims(signedJWT string) (*UserClaims, error) {
+func GetUnsafeClaims(signedJWT string) (*types.UserClaims, error) {
 	token, err := jwt.ParseSigned(signedJWT)
 	if err != nil {
 		return nil, fmt.Errorf("invalid jwt")
 	}
 
-	claims := new(UserClaims)
+	claims := new(types.UserClaims)
 
 	if err := token.UnsafeClaimsWithoutVerification(claims); err != nil {
 		return nil, fmt.Errorf("could not get unsafe claims")

@@ -8,10 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-//Create user
+// Create user in DB
 func CreateUser(db *gorm.DB, email, password, name, location string) error {
 	var users = []types.User{}
 
+	// Check if user already exists
 	if err := db.Where("email = ?", email).Find(&users).Error; err != nil {
 		fmt.Println("Error getting user. Error :", err)
 	}
@@ -20,6 +21,7 @@ func CreateUser(db *gorm.DB, email, password, name, location string) error {
 		return nil
 	}
 
+	// Create user if not already exists
 	return db.Create(&types.User{
 		Email:    email,
 		Password: password,
@@ -29,9 +31,11 @@ func CreateUser(db *gorm.DB, email, password, name, location string) error {
 }
 
 func All() []types.Seed {
+	// Hash passwords
 	hashedPassword1, _ := bcrypt.GenerateFromPassword([]byte("password1"), bcrypt.DefaultCost)
 	hashedPassword2, _ := bcrypt.GenerateFromPassword([]byte("password2"), bcrypt.DefaultCost)
 
+	// Set and return users for seeding
 	return []types.Seed{
 		types.Seed{
 			Name: "CreateShyam",

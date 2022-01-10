@@ -11,9 +11,8 @@ import (
 	"gorm.io/gorm"
 )
 
-//Mysql database connection
+// Mysql database connection
 func DbConn() *gorm.DB {
-
 	dbUserName := os.Getenv("MYSQL_USERNAME")
 	dbPassword := os.Getenv("MYSQL_PASS")
 
@@ -26,7 +25,7 @@ func DbConn() *gorm.DB {
 	return db
 }
 
-//Migration
+// Migrate to DB
 func Migrate() error {
 	db := DbConn()
 	return db.AutoMigrate(
@@ -35,7 +34,7 @@ func Migrate() error {
 	)
 }
 
-//Seeding of users
+// Seeding of users
 func SeedUsers() (err error) {
 	db := DbConn()
 

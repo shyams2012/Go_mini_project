@@ -27,8 +27,10 @@ func init() {
 		fmt.Println("Error getting env file. Error :", err)
 	}
 
+	// Migrate to DB
 	err = db.Migrate()
 	if err == nil {
+		// Seed users
 		err := db.SeedUsers()
 		if err != nil {
 			fmt.Println("Could not seed users")
@@ -38,24 +40,32 @@ func init() {
 
 func main() {
 	r := mux.NewRouter()
+
+	// Handle get user profile
 	finalhandler := http.HandlerFunc(user.GetProfile)
 	r.Handle("/getProfile", middleware.Middleware((finalhandler))).Methods("GET")
+	// Handle get user login
 	r.HandleFunc("/login", user.Login).Methods("PUT")
-	fmt.Printf("Starting server at port 8000\n")
-	http.ListenAndServe(":8000", r)
 
-	removeExpiredKeys()
+	// Remove expired keys in background
+	go removeExpiredKeys()
+
+	fmt.Printf("Starting server at port 8000\n")
+
+	// Listen to server
+	http.ListenAndServe(":8000", r)
 }
 
 //Removes expired keys from database
 func removeExpiredKeys() {
+	fmt.Println("Start removing expired keys in background")
+
 	tickChan := time.NewTicker(tickerInterval).C
-	//Infinite loop to remove expired keys at interval of 10 second using NewTicker function
+
+	//Infinite loop to remove expired keys using NewTicker function
 	for {
 		<-tickChan
-		fmt.Println("Now:", time.Now())
 		db := db.DbConn()
-
 		err := db.Where("expiration_time < ?", time.Now()).Delete(types.AuthKey{}).Error
 		if err != nil {
 			fmt.Println("Error deleting expired token.Error:", err)
