@@ -48,4 +48,4 @@
     
     Ans: Private and Public Keys do not expire but token expire which is not mentioned.
     
-    Key sets are store in database with expiration time and removes in background when keys expire.
+    Key sets are store in database with expiration time and remove in background when time of keys expire.
