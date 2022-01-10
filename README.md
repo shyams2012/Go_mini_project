@@ -35,7 +35,7 @@
     Ans: The authorization with bearer token should be provided in url endpoint. 
     After user authorized ,profile attribute such as email,name and location return in output.
     The URL Endpoint and Authorization token should be given as below. 
-    
+
     End point for profile: http://localhost:8000/getProfile    
     
      <img width="1018" alt="Screen Shot 2022-01-10 at 4 44 22 PM" src="https://user-images.githubusercontent.com/40686007/148755521-b825f80f-11bf-43cb-9850-a92674d71e1f.png">
