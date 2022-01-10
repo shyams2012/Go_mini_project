@@ -32,7 +32,7 @@ MYSQL_PASS=your_password
 
 2. Provide an authorized REST endpoint that returns the user profile matching the bearer of the request. In other words, we need to embed the bearer token in JWT format in the Authorization HTTP header of the request eg. Authorization: Bearer <JWT here>. If the user is authorized, we return the user profile. Keep the user profile simple with no more than 4 user profile attributes eg. email, name, location, etc. Validate the JWT by using a public key.
    
-    Ans: The authorization with bearer token is provided in url endpoint. 
+    Ans: The authorization with bearer token should be provided in url endpoint. 
     After user authorized ,profile attribute such as email,name and location return in output.
     The URL Endpoint and Authorization token should be given as below. 
     
