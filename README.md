@@ -21,7 +21,7 @@
 
     End point for login: http://localhost:8000/login
 
-<img width="1035" alt="Screen Shot 2022-01-10 at 10 34 10 AM" src="https://user-images.githubusercontent.com/40686007/148719660-820708a9-dbc4-4b55-8ada-bc95d0137410.png">
+    <img width="1035" alt="Screen Shot 2022-01-10 at 10 34 10 AM" src="https://user-images.githubusercontent.com/40686007/148719660-820708a9-dbc4-4b55-8ada-   bc95d0137410.png">
 
 2. Provide an authorized REST endpoint that returns the user profile matching the bearer of the request. In other words, we need to embed the bearer token in JWT format in the Authorization HTTP header of the request eg. Authorization: Bearer <JWT here>. If the user is authorized, we return the user profile. Keep the user profile simple with no more than 4 user profile attributes eg. email, name, location, etc. Validate the JWT by using a public key.
    
