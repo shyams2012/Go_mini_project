@@ -5,9 +5,9 @@
 
 *Create .env file and give appropriate username and password as given in .env_example file as shown below.
 
-MYSQL_USERNAME=username
+    MYSQL_USERNAME=username
 
-MYSQL_PASS=your_password
+    MYSQL_PASS=your_password
 
 & run below command 
 
